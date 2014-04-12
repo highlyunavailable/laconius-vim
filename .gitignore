@@ -1,6 +1,10 @@
 # Directory full of symlinks only
 bundle/
 
+# Temp and backup directories
+_backup/
+_temp/
+
 # Temporary files
 [._]*.s[a-w][a-z]
 [._]s[a-w][a-z]
