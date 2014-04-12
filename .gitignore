@@ -1,0 +1,10 @@
+# Directory full of symlinks only
+bundle/
+
+# Temporary files
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
