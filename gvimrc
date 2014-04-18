@@ -14,11 +14,11 @@
 " Set font
 if has("gui_running")
   if has("gui_gtk2")
-    " Ubuntu apt package : ttf-bitstream-vera
-    set guifont=Bitstream\ Vera\ Sans\ Mono\ 10
+    " Ubuntu apt package : ttf-dejavu
+    set guifont=DejaVu\ Sans\ Mono\ 10
   elseif has("gui_win32")
-    " TTF file: http://www.fontsquirrel.com/fonts/Bitstream-Vera-Sans-Mono
-    set guifont=Bitstream_Vera_Sans_Mono:h10:cDEFAULT
+    " TTF file: http://dejavu-fonts.org/wiki/Main_Page
+    set guifont=DejaVu_Sans_Mono:h10:cDEFAULT
   endif
 endif
 " 11 printing

@@ -35,6 +35,11 @@ if vundle_installed == 0
 endif
 " Setting up Vundle - the vim plugin bundler end
 
+if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
+  runtime! macros/matchit.vim
+endif
+
+
 " ========================================================================
 "  1 important
 " ========================================================================
@@ -44,6 +49,9 @@ set nocompatible " Use vim, no vi defaults
 " ========================================================================
 "  2 moving around, searching and patterns
 " ========================================================================
+set ignorecase  " searches are case insensitive...
+set incsearch   " incremental searching
+set smartcase   " ... unless they contain at least one capital letter
 
 let s:default_path = escape(&path, '\ ') " store default value of 'path'
 
@@ -56,10 +64,10 @@ autocmd BufRead *
       \ exec "set path^=".s:tempPath |
       \ exec "set path^=".s:default_path
 
-set incsearch   " incremental searching
-set ignorecase  " searches are case insensitive...
-set smartcase   " ... unless they contain at least one capital letter
-
+" Use <C-L> to clear the highlighting of :set hlsearch.
+if maparg('<C-L>', 'n') ==# ''
+  nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
+endif
 " ========================================================================
 "  3 tags
 " ========================================================================
@@ -67,28 +75,47 @@ set smartcase   " ... unless they contain at least one capital letter
 "  4 displaying text
 " ========================================================================
 
+set display+=lastline
+
+set list      " Show invisible characters
+set nowrap    " Don't wrap lines
 set number    " Show line numbers
 set ruler     " Show line and column number
+
+if !&scrolloff
+  set scrolloff=1
+endif
+if !&sidescrolloff
+  set sidescrolloff=5
+endif
+
 syntax enable " Turn on syntax highlighting allowing local overrides
-set nowrap    " Don't wrap lines
-set list      " Show invisible characters
 
 " List chars
-set listchars=""          " Reset the listchars
-set listchars=tab:\ \     " a tab should display as "  ", trailing whitespace as "."
-set listchars+=trail:.    " show trailing spaces as dots
-set listchars+=extends:>  " The character to show in the last column when wrap is
-                          " off and the line continues beyond the right of the screen
-set listchars+=precedes:< " The character to show in the last column when wrap is
-                          " off and the line continues beyond the left of the screen
+if &listchars ==# 'eol:$'
+  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+endif
 
-
+" string to put before wrapped screen lines
+set showbreak=¬\ \
 " ========================================================================
 " 5 syntax, highlighting and spelling
 " ========================================================================
 
-set background=dark       " Force a dark background
-colorscheme solarized     " Use the Solarized colorscheme: http://ethanschoonover.com/solarized
+if &t_Co == 8 && $TERM !~# '^linux'
+  set t_Co=16
+endif
+
+set background=dark
+
+ " Use the Solarized colorscheme: http://ethanschoonover.com/solarized
+" ignore colorscheme doesn't exist error if solarized isn't installed
+silent! colorscheme solarized
+
+if exists('+colorcolumn')
+  set colorcolumn=80 " display a line in column 80 to show you
+                     " where to line break.
+endif
 
 set hlsearch              " highlight matches
 filetype plugin indent on " Turn on filetype plugins
@@ -124,11 +151,22 @@ endif
 set laststatus=2  " always show the status bar
 
 " Start the status line
-set statusline=%f\ %m\ %r
-set statusline+=\ Line:%l/%L[%p%%]
-set statusline+=\ Col:%v
-set statusline+=\ Buf:#%n
-set statusline+=\ [%b][0x%B]
+set statusline=
+set statusline+=b%-1.3n\ > " buffer number
+set statusline+=\ %{fugitive#statusline()}:
+set statusline+=\ %F
+set statusline+=\ %M
+set statusline+=%R
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+set statusline+=%=
+set statusline+=\ %Y
+set statusline+=\ <\ %{&fenc}
+set statusline+=\ <\ %{&ff}
+set statusline+=\ <\ %p%%
+set statusline+=\ %l:
+set statusline+=%02.3c " cursor line/total lines
 
 if has("gui_running")
   if has("autocmd")
@@ -141,9 +179,13 @@ endif
 " ========================================================================
 " 7 multiple tab pages
 " ========================================================================
+if &tabpagemax < 50
+  set tabpagemax=50
+endif
 " ========================================================================
 " 8 terminal
 " ========================================================================
+set ttyfast
 " ========================================================================
 " 9 using the mouse
 " ========================================================================
@@ -156,23 +198,28 @@ endif
 " ========================================================================
 " 12 messages and info
 " ========================================================================
+set showcmd
 " ========================================================================
 " 13 selecting text
 " ========================================================================
+set clipboard=unnamed " Yank to the system clipboard by default
 " ========================================================================
 " 14 editing text
 " ========================================================================
 
 set backspace=indent,eol,start " backspace through everything in insert mode
-
+set complete-=i
+set nrformats-=octal
 " ========================================================================
 " 15 tabs and indenting
 " ========================================================================
 
-set tabstop=2                     " a tab is two spaces
-set shiftwidth=2                  " an autoindent (with <<) is two spaces
+set autoindent
 set expandtab                     " use spaces, not tabs
-
+set shiftround
+set shiftwidth=2                  " an autoindent (with <<) is two spaces
+set smarttab
+set tabstop=2                     " a tab is two spaces
 " ========================================================================
 " 16 folding
 " ========================================================================
@@ -182,7 +229,8 @@ set expandtab                     " use spaces, not tabs
 " ========================================================================
 " 18 mapping
 " ========================================================================
-
+set ttimeout
+set ttimeoutlen=100
 ""
 "" General Mappings (Normal, Visual, Operator-pending)
 ""
@@ -289,6 +337,8 @@ imap <C-8> <Esc>8gt
 map  <C-9> 9gt
 imap <C-9> <Esc>9gt
 
+inoremap <C-U> <C-G>u<C-U>
+
 
 ""
 "" Command-Line Mappings
@@ -300,7 +350,9 @@ cnoremap <expr> <C-P> getcmdline()[getcmdpos()-2] ==# ' ' ? expand('%:p:h') : "\
 " ========================================================================
 " 19 reading and writing files
 " ========================================================================
+set autoread
 set backupdir^=$VIMHOME/_backup//    " where to put backup files.
+set fileformats+=mac
 
 if has("autocmd")
   au FocusLost * silent! wall
@@ -314,9 +366,11 @@ set directory^=$VIMHOME/_temp//      " where to put swap files.
 " ========================================================================
 " 21 command line editing
 " ========================================================================
-
+if &history < 1000
+  set history=1000
+endif
 " Display available files to tab to
-set wildmode=list:longest,list:full
+" set wildmode=list:longest,list:full
 
 " Disable output and VCS files
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
@@ -336,10 +390,14 @@ set wildignore+=*/tmp/cache/assets/*/sprockets/*,*/tmp/cache/assets/*/sass/*
 " Disable temp and backup files
 set wildignore+=*.swp,*~,._*
 
+set wildmenu
 
 " ========================================================================
 " 22 executing external commands
 " ========================================================================
+if &shell =~# 'fish$'
+  set shell=/bin/bash
+endif
 " ========================================================================
 " 23 running make and jumping to errors
 " ========================================================================
@@ -352,11 +410,19 @@ set wildignore+=*.swp,*~,._*
 " ========================================================================
 " 26 multi-byte characters
 " ========================================================================
+
+if &encoding ==# 'latin1' && has('gui_running')
+  set encoding=utf-8
+endif
+
 " ========================================================================
-
-set encoding=utf-8    " Set default encoding to UTF-8
-
 " 27 various
 " ========================================================================
+set sessionoptions-=options
 
+if !empty(&viminfo)
+  set viminfo^=!
+endif
 " ========================================================================
+
+" vim:set ft=vim et sw=2:
