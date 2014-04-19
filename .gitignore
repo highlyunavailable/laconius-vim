@@ -2,8 +2,9 @@
 bundle/
 
 # Temp and backup directories
-_backup/
-_temp/
+backup/
+temp/
+undo/
 
 # Temporary files
 [._]*.s[a-w][a-z]

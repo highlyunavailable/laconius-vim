@@ -1,81 +1,54 @@
+" vim:fdm=marker
+" vim:set ft=vim et sw=2:
+" vimrc
+
+" Set encoding of file
+scriptencoding utf-8
+
+set nocompatible " Use vim, no vi defaults
+
 if has('win32') || has ('win64')
     let $VIMHOME = $HOME . "/vimfiles"
 else
     let $VIMHOME = $HOME."/.vim"
 endif
 
-" Setting up Vundle - the vim plugin bundler
-let vundle_installed=1
-let vundle_readme=expand($VIMHOME . '/bundle/vundle/README.md')
-if !filereadable(vundle_readme)
-  echo "Installing Vundle.."
-  echo ""
-  silent execute '!mkdir ' . $VIMHOME . '/bundle'
-  silent execute '!git clone https://github.com/gmarik/vundle ' . $VIMHOME . '/bundle/vundle'
-  let vundle_installed=0
-endif
+" Set the backup and swap directories before running Vundle to prevent first
+" time setup errors
+set directory^=$VIMHOME/temp//      " where to put swap files.
 
-let &rtp.=',' . $VIMHOME . '/bundle/vundle/'
-if has('win32') || has ('win64')
-  let path=$VIMHOME . '/bundle/'
-endif
+filetype off " Turn off filetype plugins for Vundle
 
-call vundle#rc(path)
-Plugin 'gmarik/vundle'
-"Add your bundles here
-Plugin 'Syntastic' "uber awesome syntax and errors highlighter
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'scrooloose/nerdtree'
-Plugin 'https://github.com/tpope/vim-fugitive' "So awesome, it should be illegal 
-"...All your other bundles...
-if vundle_installed == 0
-  echo "Installing Bundles, please ignore key map error messages"
-  echo ""
-  :PluginInstall
-endif
-" Setting up Vundle - the vim plugin bundler end
+source $VIMHOME/vundle.vim
 
+filetype plugin indent on " Turn on filetype plugins after Vundle is enabled
+
+" Load matchit if an updated version is not present
 if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
   runtime! macros/matchit.vim
 endif
 
-
 " ========================================================================
-"  1 important
+" moving around, searching and patterns {{{1
 " ========================================================================
-
-set nocompatible " Use vim, no vi defaults
-
-" ========================================================================
-"  2 moving around, searching and patterns
-" ========================================================================
-set ignorecase  " searches are case insensitive...
-set incsearch   " incremental searching
-set smartcase   " ... unless they contain at least one capital letter
-
-let s:default_path = escape(&path, '\ ') " store default value of 'path'
-
-" Always add the current file's directory to the path and tags list if not
-" already there. Add it to the beginning to speed up searches.
-autocmd BufRead *
-      \ let s:tempPath=escape(escape(expand("%:p:h"), ' '), '\ ') |
-      \ exec "set path-=".s:tempPath |
-      \ exec "set path-=".s:default_path |
-      \ exec "set path^=".s:tempPath |
-      \ exec "set path^=".s:default_path
+set ignorecase
+set incsearch
+set smartcase
 
 " Use <C-L> to clear the highlighting of :set hlsearch.
 if maparg('<C-L>', 'n') ==# ''
   nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 endif
 " ========================================================================
-"  3 tags
+" tags {{{1
 " ========================================================================
 " ========================================================================
-"  4 displaying text
+" displaying text {{{1
 " ========================================================================
 
 set display+=lastline
+
+set cmdheight=2
 
 set list      " Show invisible characters
 set nowrap    " Don't wrap lines
@@ -83,7 +56,7 @@ set number    " Show line numbers
 set ruler     " Show line and column number
 
 if !&scrolloff
-  set scrolloff=1
+  set scrolloff=2
 endif
 if !&sidescrolloff
   set sidescrolloff=5
@@ -97,9 +70,9 @@ if &listchars ==# 'eol:$'
 endif
 
 " string to put before wrapped screen lines
-set showbreak=¬\ \
+set showbreak=\¬\ \
 " ========================================================================
-" 5 syntax, highlighting and spelling
+" syntax, highlighting and spelling {{{1
 " ========================================================================
 
 if &t_Co == 8 && $TERM !~# '^linux'
@@ -118,7 +91,6 @@ if exists('+colorcolumn')
 endif
 
 set hlsearch              " highlight matches
-filetype plugin indent on " Turn on filetype plugins
 
 if has("autocmd")
   " In Makefiles, use real tabs, not tabs expanded to spaces
@@ -132,7 +104,7 @@ if has("autocmd")
   au FileType markdown setlocal wrap linebreak textwidth=72 nolist
 
   " Treat JSON files like JavaScript
-  au BufNewFile,BufRead *.json set ft=javascript
+  " au BufNewFile,BufRead *.json set ft=javascript
 
   " make Python follow PEP8 for whitespace ( http://www.python.org/dev/peps/pep-0008/ )
   au FileType python setlocal softtabstop=4 tabstop=4 shiftwidth=4
@@ -145,7 +117,7 @@ endif
 
 
 " ========================================================================
-" 6 multiple windows
+" multiple windows {{{1
 " ========================================================================
 
 set laststatus=2  " always show the status bar
@@ -175,43 +147,46 @@ if has("gui_running")
   endif
 endif
 
+" Open new split panes to right and bottom, which feels more natural
+set splitbelow
+set splitright
 
 " ========================================================================
-" 7 multiple tab pages
+" multiple tab pages {{{1
 " ========================================================================
 if &tabpagemax < 50
   set tabpagemax=50
 endif
 " ========================================================================
-" 8 terminal
+" terminal {{{1
 " ========================================================================
 set ttyfast
 " ========================================================================
-" 9 using the mouse
+" using the mouse {{{1
 " ========================================================================
 " ========================================================================
-" 10 GUI
+" GUI {{{1
 " ========================================================================
 " ========================================================================
-" 11 printing
+" printing {{{1
 " ========================================================================
 " ========================================================================
-" 12 messages and info
+" messages and info {{{1
 " ========================================================================
 set showcmd
 " ========================================================================
-" 13 selecting text
+" selecting text {{{1
 " ========================================================================
 set clipboard=unnamed " Yank to the system clipboard by default
 " ========================================================================
-" 14 editing text
+" editing text {{{1
 " ========================================================================
 
 set backspace=indent,eol,start " backspace through everything in insert mode
 set complete-=i
 set nrformats-=octal
 " ========================================================================
-" 15 tabs and indenting
+" tabs and indenting {{{1
 " ========================================================================
 
 set autoindent
@@ -221,150 +196,52 @@ set shiftwidth=2                  " an autoindent (with <<) is two spaces
 set smarttab
 set tabstop=2                     " a tab is two spaces
 " ========================================================================
-" 16 folding
+" folding {{{1
 " ========================================================================
+
+if has('folding')
+  set nofoldenable " When opening files, all folds open by default
+  set foldtext=NeatFoldText() " Use a custom foldtext function
+endif
+
 " ========================================================================
-" 17 diff mode
+" diff mode {{{1
 " ========================================================================
+
+set diffopt+=vertical
+
 " ========================================================================
-" 18 mapping
+" mapping {{{1
 " ========================================================================
 set ttimeout
 set ttimeoutlen=100
-""
-"" General Mappings (Normal, Visual, Operator-pending)
-""
 
-" Toggle paste mode
-nmap <silent> <F4> :set invpaste<CR>:set paste?<CR>
-imap <silent> <F4> <ESC>:set invpaste<CR>:set paste?<CR>
-
-" format the entire file
-nnoremap <leader>fef :normal! gg=G``<CR>
-
-" upper/lower word
-nmap <leader>u mQviwU`Q
-nmap <leader>l mQviwu`Q
-
-" upper/lower first char of word
-nmap <leader>U mQgewvU`Q
-nmap <leader>L mQgewvu`Q
-
-" cd to the directory containing the file in the buffer
-nmap <silent> <leader>cd :lcd %:h<CR>
-
-" Create the directory containing the file in the buffer
-nmap <silent> <leader>md :!mkdir -p %:p:h<CR>
-
-" Some helpers to edit mode
-" http://vimcasts.org/e/14
-nmap <leader>ew :e <C-R>=expand('%:h').'/'<cr>
-nmap <leader>es :sp <C-R>=expand('%:h').'/'<cr>
-nmap <leader>ev :vsp <C-R>=expand('%:h').'/'<cr>
-nmap <leader>et :tabe <C-R>=expand('%:h').'/'<cr>
-
-" Swap two words
-nmap <silent> gw :s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR>`'
-
-" Underline the current line with '='
-nmap <silent> <leader>ul :t.<CR>Vr=
-
-" set text wrapping toggles
-nmap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
-
-" find merge conflict markers
-nmap <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
-
-" Map the arrow keys to be based on display lines, not physical lines
-map <Down> gj
-map <Up> gk
-
-" Toggle hlsearch with <leader>hs
-nmap <leader>hs :set hlsearch! hlsearch?<CR>
-
-" Adjust viewports to the same size
-map <Leader>= <C-w>=
-
-" Map alt-[ and alt-] to indenting or outdenting
-" while keeping the original selection in visual mode
-vmap <A-]> >gv
-vmap <A-[> <gv
-
-nmap <A-]> >>
-nmap <A-[> <<
-
-omap <A-]> >>
-omap <A-[> <<
-
-imap <A-]> <Esc>>>i
-imap <A-[> <Esc><<i
-
-" Bubble single lines
-nmap <C-Up> [e
-nmap <C-Down> ]e
-nmap <C-k> [e
-nmap <C-j> ]e
-
-" Bubble multiple lines
-vmap <C-Up> [egv
-vmap <C-Down> ]egv
-vmap <C-k> [egv
-vmap <C-j> ]egv
-
-" Make shift-insert work like in Xterm
-map <S-Insert> <MiddleMouse>
-map! <S-Insert> <MiddleMouse>
-
-" Map Control-# to switch tabs
-map  <C-0> 0gt
-imap <C-0> <Esc>0gt
-map  <C-1> 1gt
-imap <C-1> <Esc>1gt
-map  <C-2> 2gt
-imap <C-2> <Esc>2gt
-map  <C-3> 3gt
-imap <C-3> <Esc>3gt
-map  <C-4> 4gt
-imap <C-4> <Esc>4gt
-map  <C-5> 5gt
-imap <C-5> <Esc>5gt
-map  <C-6> 6gt
-imap <C-6> <Esc>6gt
-map  <C-7> 7gt
-imap <C-7> <Esc>7gt
-map  <C-8> 8gt
-imap <C-8> <Esc>8gt
-map  <C-9> 9gt
-imap <C-9> <Esc>9gt
-
-inoremap <C-U> <C-G>u<C-U>
-
-
-""
-"" Command-Line Mappings
-""
-
-" After whitespace, insert the current directory into a command-line path
-cnoremap <expr> <C-P> getcmdline()[getcmdpos()-2] ==# ' ' ? expand('%:p:h') : "\<C-P>"
+source $VIMHOME/mapping.vim
 
 " ========================================================================
-" 19 reading and writing files
+" reading and writing files {{{1
 " ========================================================================
 set autoread
-set backupdir^=$VIMHOME/_backup//    " where to put backup files.
 set fileformats+=mac
+
+set backupdir^=$VIMHOME/backup//    " where to put backup files.
 
 if has("autocmd")
   au FocusLost * silent! wall
 endif
 
 " ========================================================================
-" 20 the swap file
+" the swap file {{{1
 " ========================================================================
-set directory^=$VIMHOME/_temp//      " where to put swap files.
+if exists('+undodir')
+  set undodir^=$VIMHOME/undo//
+endif
+if exists('+undofile')
+  set undofile
+endif
 
 " ========================================================================
-" 21 command line editing
+" command line editing {{{1
 " ========================================================================
 if &history < 1000
   set history=1000
@@ -390,25 +267,30 @@ set wildignore+=*/tmp/cache/assets/*/sprockets/*,*/tmp/cache/assets/*/sass/*
 " Disable temp and backup files
 set wildignore+=*.swp,*~,._*
 
+" Add guard around 'wildignorecase' to prevent terminal vim error
+if exists('&wildignorecase')
+  set wildignorecase
+endif
+
 set wildmenu
 
 " ========================================================================
-" 22 executing external commands
+" executing external commands {{{1
 " ========================================================================
 if &shell =~# 'fish$'
   set shell=/bin/bash
 endif
 " ========================================================================
-" 23 running make and jumping to errors
+" running make and jumping to errors {{{1
 " ========================================================================
 " ========================================================================
-" 24 system specific
+" system specific {{{1
 " ========================================================================
 " ========================================================================
-" 25 language specific
+" language specific {{{1
 " ========================================================================
 " ========================================================================
-" 26 multi-byte characters
+" multi-byte characters {{{1
 " ========================================================================
 
 if &encoding ==# 'latin1' && has('gui_running')
@@ -416,7 +298,7 @@ if &encoding ==# 'latin1' && has('gui_running')
 endif
 
 " ========================================================================
-" 27 various
+" various {{{1
 " ========================================================================
 set sessionoptions-=options
 
@@ -425,4 +307,3 @@ if !empty(&viminfo)
 endif
 " ========================================================================
 
-" vim:set ft=vim et sw=2:
