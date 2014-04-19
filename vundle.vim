@@ -10,11 +10,9 @@ if !filereadable(s:vundle_readme)
 endif
 
 let &rtp.=',' . $VIMHOME . '/bundle/vundle/'
-if has('win32') || has ('win64')
-  let g:path=$VIMHOME . '/bundle/'
-endif
+let s:path=$VIMHOME . '/bundle/'
 
-call vundle#rc(path)
+call vundle#rc(s:path)
 Plugin 'gmarik/vundle'
 
 " Cross-language plugins
