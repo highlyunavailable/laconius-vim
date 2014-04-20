@@ -1,0 +1,15 @@
+# Vundle directory of plugins
+bundle/
+
+# Temp and backup directories
+backup/
+temp/
+undo/
+
+# Temporary files
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
