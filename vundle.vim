@@ -16,7 +16,7 @@ call vundle#rc(s:path)
 Plugin 'gmarik/vundle'
 
 " Cross-language plugins
-Plugin 'altercation/vim-colors-solarized'
+Plugin 'highlyunavailable/vim-colors-solarized'
 Plugin 'tpope/vim-git'
 Plugin 'tpope/vim-fugitive'
 Plugin 'godlygeek/tabular'
