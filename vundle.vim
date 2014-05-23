@@ -33,6 +33,10 @@ Plugin 'ervandew/supertab'
 Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'mhinz/vim-startify'
 Plugin 'HarnoRanaivo/vim-neatfoldtext'
+Plugin 'Raimondi/delimitMate'
+Plugin 'jelera/vim-javascript-syntax'
+
+Plugin 'marijnh/tern_for_vim'
 
 if executable('ag')
   Plugin 'rking/ag.vim'
