@@ -12,15 +12,15 @@ imap <silent> <F4> <ESC>:set invpaste<CR>:set paste?<CR>
 " format the entire file
 nnoremap <leader>fef :normal! gg=G``<CR>
 
-autocmd FileType javascript nnoremap <leader>fef :call JsBeautify()<cr>
-" for html
-autocmd FileType html nnoremap <leader>fef :call HtmlBeautify()<cr>
-" for css or scss
-autocmd FileType css nnoremap <leader>fef :call CSSBeautify()<cr>
+"autocmd FileType javascript nnoremap <leader>fef :call JsBeautify()<cr>
+"" for html
+"autocmd FileType html nnoremap <leader>fef :call HtmlBeautify()<cr>
+"" for css or scss
+"autocmd FileType css nnoremap <leader>fef :call CSSBeautify()<cr>
 
-autocmd FileType javascript vnoremap <buffer> <leader>fef :call RangeJsBeautify()<cr>
-autocmd FileType html vnoremap <buffer> <leader>fef :call RangeHtmlBeautify()<cr>
-autocmd FileType css vnoremap <buffer> <leader>fef :call RangeCSSBeautify()<cr>
+"autocmd FileType javascript vnoremap <buffer> <leader>fef :call RangeJsBeautify()<cr>
+"autocmd FileType html vnoremap <buffer> <leader>fef :call RangeHtmlBeautify()<cr>
+"autocmd FileType css vnoremap <buffer> <leader>fef :call RangeCSSBeautify()<cr>
 
 " upper/lower word
 nmap <leader>u mQviwU`Q

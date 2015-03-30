@@ -54,6 +54,10 @@ Plugin 'tmhedberg/matchit'
 Plugin 'ynkdir/vim-vimlparser'
 Plugin 'syngan/vim-vimlint'
 
+" Javascript
+Plugin 'marijnh/tern_for_vim'
+Plugin 'jelera/vim-javascript-syntax'
+
 " Salt plugins
 Plugin 'saltstack/salt-vim'
 Plugin 'Jinja'
@@ -64,9 +68,6 @@ Plugin 'davidhalter/jedi-vim'
 
 " Powershell Plugins
 Plugin 'PProvost/vim-ps1'
-
-" YAML plugin
-Plugin 'avakhov/vim-yaml'
 
 " Markdown Plugins
 Plugin 'tpope/vim-markdown'
