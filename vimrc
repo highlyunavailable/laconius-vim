@@ -1,4 +1,4 @@
-" vim:fdm=marker
+﻿" vim:fdm=marker
 " vim:set ft=vim et sw=2:
 " vimrc
 
@@ -15,7 +15,7 @@ endif
 
 " Set the backup and swap directories before running Vundle to prevent first
 " time setup errors
-set directory^=$VIMHOME/temp//      " where to put swap files.
+set directory^=$VIMHOME/_temp//      " where to put swap files.
 
 filetype off " Turn off filetype plugins for Vundle
 
@@ -83,7 +83,7 @@ set background=dark
 
  " Use the Solarized colorscheme: http://ethanschoonover.com/solarized
 " ignore colorscheme doesn't exist error if solarized isn't installed
-silent! colorscheme solarized
+silent! colorscheme base16-default
 
 if exists('+colorcolumn')
   set colorcolumn=80 " display a line in column 80 to show you
@@ -95,7 +95,6 @@ set hlsearch              " highlight matches
 if has("autocmd")
   " In Makefiles, use real tabs, not tabs expanded to spaces
   au FileType make setlocal noexpandtab
-
   " Set the Ruby filetype for a number of common Ruby files without .rb
   au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,Procfile,Guardfile,config.ru,*.rake} set ft=ruby
 
@@ -224,7 +223,7 @@ source $VIMHOME/mapping.vim
 set autoread
 set fileformats+=mac
 
-set backupdir^=$VIMHOME/backup//    " where to put backup files.
+set backupdir^=$VIMHOME/_backup//    " where to put backup files.
 
 if has("autocmd")
   au FocusLost * silent! wall
@@ -234,7 +233,7 @@ endif
 " the swap file {{{1
 " ========================================================================
 if exists('+undodir')
-  set undodir^=$VIMHOME/undo//
+  set undodir^=$VIMHOME/_undo//
 endif
 if exists('+undofile')
   set undofile

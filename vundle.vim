@@ -15,22 +15,32 @@ let s:path=$VIMHOME . '/bundle/'
 call vundle#rc(s:path)
 Plugin 'gmarik/vundle'
 
-" Cross-language plugins
-Plugin 'altercation/vim-colors-solarized'
+" Syntax Highlighting
+Plugin 'chriskempson/base16-vim'
+
+" Syntax checking/linting
+Plugin 'scrooloose/syntastic'
+Plugin 'bronson/vim-trailing-whitespace'
+
+" Git
 Plugin 'tpope/vim-git'
 Plugin 'tpope/vim-fugitive'
+
+" Text alignment
 Plugin 'godlygeek/tabular'
-Plugin 'scrooloose/syntastic'
+
+" File browsing
 Plugin 'scrooloose/nerdtree'
+
+" Autocomplete
 Plugin 'tpope/vim-surround'
+
+" Code comments
 Plugin 'scrooloose/nerdcommenter'
-Plugin 'tomtom/tlib_vim'
-Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'highlyunavailable/vim-snipmate'
-Plugin 'honza/vim-snippets'
+
+" Mappings/tab completion
 Plugin 'tpope/vim-unimpaired'
-Plugin 'ervandew/supertab'
-Plugin 'bronson/vim-trailing-whitespace'
+Plugin 'Valloric/YouCompleteMe', {'pinned': 1 }
 Plugin 'mhinz/vim-startify'
 Plugin 'HarnoRanaivo/vim-neatfoldtext'
 
@@ -44,26 +54,26 @@ Plugin 'tmhedberg/matchit'
 Plugin 'ynkdir/vim-vimlparser'
 Plugin 'syngan/vim-vimlint'
 
+" Salt plugins
+Plugin 'saltstack/salt-vim'
+Plugin 'Jinja'
+let g:sls_use_jinja_syntax = 1
+
+" Python
+Plugin 'davidhalter/jedi-vim'
+
+" Powershell Plugins
+Plugin 'PProvost/vim-ps1'
+
+" YAML plugin
+Plugin 'avakhov/vim-yaml'
+
 " Markdown Plugins
 Plugin 'tpope/vim-markdown'
 
-" JavaScript Plugins
-Plugin 'pangloss/vim-javascript'
-
-" JSON Plugins
-Plugin 'elzr/vim-json'
-
-" Coffeescript Plugins
-Plugin 'kchmck/vim-coffee-script'
-
-" Ruby Plugins
-Plugin 'thoughtbot/vim-rspec'
-Plugin 'tpope/vim-bundler'
-Plugin 'tpope/vim-rake'
-Plugin 'vim-ruby/vim-ruby'
-
-" Chef Plugins
-Plugin 'dougireton/vim-chef'
+" Go plugins
+Plugin 'fatih/vim-go'
+Plugin 'nsf/gocode', {'rtp': 'vim/'}
 
 if s:vundle_installed == 0
   echo "Installing Bundles, please ignore key map error messages"
